@@ -1,15 +1,15 @@
-import React, { useState, useRef, useCallback, ChangeEvent } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Todolist from "./Todolist";
 import TodoInsert from "./TodoInsert";
 import TodoHeader from "./TodoHeader";
 
 const Todo: React.FC = () => {
   interface Todo {
-    id: Number;
-    text: String;
+    id: number;
+    text: string;
     checked: Boolean;
   }
-  const [todoInput, setTodoInput] = useState<String>("");
+  const [todoInput, setTodoInput] = useState<string>("");
   const [todo, setTodo] = useState<Todo[]>(
     JSON.parse(localStorage.getItem("todo")!) || [] // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.
   );
@@ -20,7 +20,7 @@ const Todo: React.FC = () => {
   // }
 
   const onSubmitHandler = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!todoInput) {
         alert("할 일을 입력해주세요");
@@ -45,13 +45,13 @@ const Todo: React.FC = () => {
     [todo, todoInput]
   );
 
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTodoInput(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value); //throttle
   };
 
   const onDeleteHandler = useCallback(
-    (todoId) => {
+    (todoId:number): void => {
       setTodo(todo.filter((todos) => todos.id !== todoId));
       localStorage.setItem(
         "todo",
@@ -62,7 +62,7 @@ const Todo: React.FC = () => {
   );
 
   const onCheckToggleHandler = useCallback(
-    (todoId) => {
+    (todoId:number): void => {
       setTodo(
         todo.map((todos) =>
           todos.id === todoId ? { ...todos, checked: !todos.checked } : todos
@@ -74,7 +74,7 @@ const Todo: React.FC = () => {
   );
 
   const onEditHandler = useCallback(
-    (todoId, editedText) => {
+    (todoId:number, editedText:string): void => {
       setTodo(
         todo.map((todos) =>
           todos.id === todoId ? { ...todos, text: editedText } : todos

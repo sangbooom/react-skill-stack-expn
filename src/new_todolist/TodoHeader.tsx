@@ -1,6 +1,11 @@
 import React from "react";
+interface Todo {
+  id: Number;
+  text: String;
+  checked: Boolean;
+}
 interface TodoHeaderProps {
-  todo: []
+  todo: Todo[]
 }
 const TodoHeader: React.FC<TodoHeaderProps> = ({ todo }) => {
   const undoneTasks = todo.filter((todos) => !todos.checked);

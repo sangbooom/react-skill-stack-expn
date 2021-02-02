@@ -1,34 +1,45 @@
 import React from "react";
 import TodolistItem from "./TodolistItem";
-interface TodolistProps {
-  todo: [];
-  onDeleteHandler: void
-  onCheckToggleHandler: void
-  onEditHandler: void
+
+interface Todo {
+  id: number;
+  text: string;
+  checked: Boolean;
 }
-const Todolist: React.FC = ({
+interface TodolistProps {
+  todo: Todo[];
+  onDeleteHandler(todoId: number): void;
+  onCheckToggleHandler(todoId: number): void;
+  onEditHandler(todoId: number, editedText: string): void;
+}
+
+const Todolist: React.FC<TodolistProps> = ({
   todo,
   onDeleteHandler,
   onCheckToggleHandler,
   onEditHandler,
 }) => {
-  return todo.map((todos, index) => (
-    <div
-      key={index}
-      style={{
-        width: 500,
-        height: 65,
-      }}
-    >
-      <TodolistItem
-        key={todos.id}
-        todos={todos}
-        onDeleteHandler={onDeleteHandler}
-        onCheckToggleHandler={onCheckToggleHandler}
-        onEditHandler={onEditHandler}
-      />
-    </div>
-  ));
+  return (
+    <React.Fragment>
+      {todo.map((todos, index) => (
+        <div
+          key={index}
+          style={{
+            width: 500,
+            height: 65,
+          }}
+        >
+          <TodolistItem
+            key={todos.id}
+            todos={todos}
+            onDeleteHandler={onDeleteHandler}
+            onCheckToggleHandler={onCheckToggleHandler}
+            onEditHandler={onEditHandler}
+          />
+        </div>
+      ))}
+    </React.Fragment>
+  );
 };
 
 export default Todolist;

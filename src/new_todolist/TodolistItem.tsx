@@ -1,10 +1,15 @@
 import React, { ChangeEvent, useState } from "react";
 // import { Input } from "antd";
+interface Todo {
+  id: number;
+  text: string;
+  checked: Boolean;
+}
 interface TodolistItemProps {
-  todos: [];
-  onDeleteHandler: void;
-  onCheckToggleHandler: void;
-  onEditHandler: void;
+  todos: Todo;
+  onDeleteHandler(todoId:number): void;
+  onCheckToggleHandler(todoId:number): void;
+  onEditHandler(todoId:number, editedText:string): void;
 }
 const TodolistItem: React.FC<TodolistItemProps> = ({
   todos,
@@ -12,12 +17,12 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
   onCheckToggleHandler,
   onEditHandler,
 }) => {
-  const [toggle, setToggle] = useState(true);
-  const [edit, setEdit] = useState(todos.text);
+  const [toggle, setToggle] = useState<boolean>(true);
+  const [edit, setEdit] = useState<string>(todos.text);
 
-  const onToggleHandler = (id) => {
+  const onToggleHandler = (todoId:number) => {
     if (!toggle && todos.text !== edit) {
-      onEditHandler(id, edit);
+      onEditHandler(todoId, edit);
     }
     setToggle(!toggle);
   };

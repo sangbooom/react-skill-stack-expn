@@ -1,9 +1,9 @@
 import React from "react";
 // import { Button, Input } from "antd";
 interface TodoInsertProps {
-  onSubmitHandler: void;
-  onChangeInput: void;
-  todoInput: String;
+  onSubmitHandler(e: any): void;
+  onChangeInput(e: any): void;
+  todoInput: string;
 }
 const TodoInsert: React.FC<TodoInsertProps> = ({ onSubmitHandler, todoInput, onChangeInput }) => {
   return (
