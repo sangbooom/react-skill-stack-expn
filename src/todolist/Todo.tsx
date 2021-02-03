@@ -1,7 +1,9 @@
+/** @jsx jsx */
 import React, { useState, useRef, useCallback } from "react";
 import Todolist from "./Todolist";
 import TodoInsert from "./TodoInsert";
 import TodoHeader from "./TodoHeader";
+import { jsx, css } from "@emotion/react";
 
 const Todo: React.FC = () => {
   interface Todo {
@@ -52,7 +54,7 @@ const Todo: React.FC = () => {
   };
 
   const onDeleteHandler = useCallback(
-    (todoId:number): void => {
+    (todoId: number): void => {
       setTodo(todo.filter((todos) => todos.id !== todoId));
       localStorage.setItem(
         "todo",
@@ -63,7 +65,7 @@ const Todo: React.FC = () => {
   );
 
   const onCheckToggleHandler = useCallback(
-    (todoId:number): void => {
+    (todoId: number): void => {
       setTodo(
         todo.map((todos) =>
           todos.id === todoId ? { ...todos, checked: !todos.checked } : todos
@@ -75,7 +77,7 @@ const Todo: React.FC = () => {
   );
 
   const onEditHandler = useCallback(
-    (todoId:number, editedText:string): void => {
+    (todoId: number, editedText: string): void => {
       setTodo(
         todo.map((todos) =>
           todos.id === todoId ? { ...todos, text: editedText } : todos
@@ -87,21 +89,14 @@ const Todo: React.FC = () => {
   );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div css={container}>
       <TodoHeader todo={todo} />
       <TodoInsert
         onSubmitHandler={onSubmitHandler}
         onChangeInput={onChangeInput}
         todoInput={todoInput}
       />
-      <div style={{ overflowY: "auto", height: 650 }}>
+      <div css={content}>
         <Todolist
           todo={todo}
           onDeleteHandler={onDeleteHandler}
@@ -114,3 +109,15 @@ const Todo: React.FC = () => {
 };
 
 export default Todo;
+
+const container = css({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const content = css({
+  overflowY: "auto",
+  height: 650,
+});
