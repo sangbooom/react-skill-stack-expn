@@ -19,7 +19,7 @@ const TodoInsert: React.FC<TodoInsertProps> = ({
         onChange={onChangeInput}
         value={todoInput}
       />
-      <button>추가</button>
+      <button css={{ width: 50 }}>추가</button>
     </form>
   );
 };

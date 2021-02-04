@@ -111,10 +111,8 @@ const Todo: React.FC = () => {
 export default Todo;
 
 const container = css({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
+  maxWidth: 540,
+  margin: 'auto'
 });
 
 const content = css({

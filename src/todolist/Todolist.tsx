@@ -1,5 +1,7 @@
+/** @jsx jsx */
 import React from "react";
 import TodolistItem from "./TodolistItem";
+import { jsx, css } from "@emotion/react";
 
 interface Todo {
   id: number;
@@ -21,22 +23,14 @@ const Todolist: React.FC<TodolistProps> = ({
 }) => {
   return (
     <React.Fragment>
-      {todo.map((todos, index) => (
-        <div
-          key={index}
-          style={{
-            width: 500,
-            height: 65,
-          }}
-        >
-          <TodolistItem
-            key={todos.id}
-            todos={todos}
-            onDeleteHandler={onDeleteHandler}
-            onCheckToggleHandler={onCheckToggleHandler}
-            onEditHandler={onEditHandler}
-          />
-        </div>
+      {todo.map((todos) => (
+        <TodolistItem
+          key={todos.id}
+          todos={todos}
+          onDeleteHandler={onDeleteHandler}
+          onCheckToggleHandler={onCheckToggleHandler}
+          onEditHandler={onEditHandler}
+        />
       ))}
     </React.Fragment>
   );
