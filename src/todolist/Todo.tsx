@@ -13,10 +13,11 @@ const Todo: React.FC = () => {
   }
   const [todoInput, setTodoInput] = useState<string>("");
   const [todo, setTodo] = useState<Todo[]>(
-    // JSON.parse(localStorage.getItem("todo")!) || [] // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.
-    []
+    JSON.parse(localStorage.getItem("todo")!) || [] // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.
   );
-  let nextId = useRef(1);
+  const [keyword, setKeyword] = useState<string>("");
+
+  let nextId = useRef(1); //localstorage에 저장하고 새로고침하고 add하면 당연히 1부터니까 오류나지. 이것도 getItem으로 id받아오기
 
   // const addTodo = (todo: Todo) => {
   //   todos = [...TodoInsert, todo];
@@ -29,7 +30,6 @@ const Todo: React.FC = () => {
         alert("할 일을 입력해주세요");
         return;
       }
-
       const todos: Todo = {
         id: nextId.current++,
         text: todoInput,
@@ -39,10 +39,6 @@ const Todo: React.FC = () => {
       setTodo(todo.concat(todos));
 
       localStorage.setItem("todo", JSON.stringify(todo.concat(todos)));
-      // setTodo([
-      //   ...todo,
-      //   { id: nextId.current++, text: todoInput, checked: false },
-      // ]);
       setTodoInput("");
     },
     [todo, todoInput]
@@ -50,7 +46,7 @@ const Todo: React.FC = () => {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTodoInput(e.target.value);
-    // console.log(e.target.value); //throttle
+    // console.log(e.target.value); //debounce
   };
 
   const onDeleteHandler = useCallback(
@@ -88,9 +84,17 @@ const Todo: React.FC = () => {
     [todo]
   );
 
+  const onSearchHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setKeyword(e.target.value);
+  };
+
+  // const todoFilter = useCallback((): Todo[] => {
+  //   return todo.filter((todos) => todos.text.indexOf(keyword) > -1);
+  // }, [todo, keyword]);
+
   return (
     <div css={container}>
-      <TodoHeader todo={todo} />
+      <TodoHeader todo={todo} onSearchHandler={onSearchHandler} />
       <TodoInsert
         onSubmitHandler={onSubmitHandler}
         onChangeInput={onChangeInput}
@@ -98,7 +102,7 @@ const Todo: React.FC = () => {
       />
       <div css={content}>
         <Todolist
-          todo={todo}
+          todo={todo.filter((todos) => todos.text.indexOf(keyword) > -1)}
           onDeleteHandler={onDeleteHandler}
           onCheckToggleHandler={onCheckToggleHandler}
           onEditHandler={onEditHandler}
@@ -112,7 +116,7 @@ export default Todo;
 
 const container = css({
   maxWidth: 540,
-  margin: 'auto'
+  margin: "auto",
 });
 
 const content = css({

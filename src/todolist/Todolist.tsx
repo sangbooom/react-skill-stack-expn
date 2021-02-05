@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React from "react";
 import TodolistItem from "./TodolistItem";
-import { jsx, css } from "@emotion/react";
+import { jsx } from "@emotion/react";
 
 interface Todo {
   id: number;
@@ -23,7 +23,7 @@ const Todolist: React.FC<TodolistProps> = ({
 }) => {
   return (
     <React.Fragment>
-      {todo.map((todos) => (
+      {todo.map((todos: Todo) => (
         <TodolistItem
           key={todos.id}
           todos={todos}
