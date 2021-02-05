@@ -4,7 +4,7 @@
 |:---|:---|:---:|
 | `emotion` | CSS-in-JS | ✅ |
 | `storybook` | UI컴포넌트의 독립적인 개발환경 구축 |  |
-| `lodash (throttle, debounce)` | 유틸리티 기능제공 |  |
+| `lodash (throttle, debounce)` | 유틸리티 기능제공 | ✅ |
 | `redux-toolkit` | 상태 관리 | |
 | `jest` | 단위 테스트 | ✅ |
 
