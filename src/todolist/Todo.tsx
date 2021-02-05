@@ -17,11 +17,7 @@ const Todo: React.FC = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
 
-  let nextId = useRef(1); //localstorage에 저장하고 새로고침하고 add하면 당연히 1부터니까 오류나지. 이것도 getItem으로 id받아오기
-
-  // const addTodo = (todo: Todo) => {
-  //   todos = [...TodoInsert, todo];
-  // }
+  let nextId = useRef(Math.max(...JSON.parse(localStorage.getItem("todo")!).map((todos:any) => todos.id))+1 | 1);
 
   const onSubmitHandler = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
