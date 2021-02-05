@@ -4,7 +4,7 @@ import Todolist from "./Todolist";
 import TodoInsert from "./TodoInsert";
 import TodoHeader from "./TodoHeader";
 import { jsx, css } from "@emotion/react";
-
+import { debounce, throttle } from 'lodash';
 const Todo: React.FC = () => {
   interface Todo {
     id: number;
@@ -84,8 +84,12 @@ const Todo: React.FC = () => {
     [todo]
   );
 
+  const debounceHandler = debounce((evt) => {
+    setKeyword(evt);
+  }, 500);
+
   const onSearchHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setKeyword(e.target.value);
+    debounceHandler(e.target.value);
   };
 
   // const todoFilter = useCallback((): Todo[] => {
