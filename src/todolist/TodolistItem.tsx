@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { ChangeEvent, useState } from "react";
-import { jsx, css } from "@emotion/react";
+import { jsx, css, useTheme } from "@emotion/react";
 
 interface Todo {
   id: number;
@@ -13,6 +13,7 @@ interface TodolistItemProps {
   onCheckToggleHandler(todoId: number): void;
   onEditHandler(todoId: number, editedText: string): void;
 }
+
 const TodolistItem: React.FC<TodolistItemProps> = ({
   todos,
   onDeleteHandler,
@@ -40,6 +41,42 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
     onCheckToggleHandler(todos.id);
   };
 
+  const theme = useTheme() as any;
+
+  const content_wrapper = css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    border: "0.3px solid #e6e6e6",
+    borderRadius: 10,
+    "& div": {
+      display: "flex",
+      flexDirection: "row",
+    },
+    "&:nth-child(2n)": {
+      backgroundColor: `${theme.nthBg}`
+    }
+  });
+
+  const content__input__change_false = css({
+    color: `${theme.inputText}`,
+    border: `1px solid ${theme.inputBorder}`,
+    backgroundColor: `${theme.inputBackgroundColor}`,
+  })
+
+  const content__button__change_false = css({
+    width: 20,
+    height: 20,
+    boxSizing: "border-box",
+    border: `1px solid ${theme.inputBorder}`,
+    backgroundColor: `${theme.background}`,
+    marginRight: 10,
+  });
+
   return (
     <div css={content_wrapper}>
       <div onClick={onChangeHandler}>
@@ -54,7 +91,7 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
             {todos.text}
           </React.Fragment>
         ) : (
-          <input onChange={onChangeText} value={edit} />
+          <input css={content__input__change_false} onChange={onChangeText} value={edit} />
         )}
       </div>
       <div css={content__button__toggle}>
@@ -69,39 +106,15 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
 
 export default React.memo(TodolistItem);
 
-const content_wrapper = css({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: 20,
-  marginTop: 10,
-  marginBottom: 10,
-  border: "0.3px solid #f0f0f0",
-  borderRadius: 10,
-  "& div": {
-    display: "flex",
-    flexDirection: "row",
-  },
-});
-
 const content__button__change_true = css({
   width: 20,
   height: 20,
-  backgroundColor: "#45ffd0",
+  backgroundColor: "#03DAC5",
 });
 
 const content__text__change_true = css({
   textDecoration: "line-through",
   marginLeft: 10,
-});
-
-const content__button__change_false = css({
-  width: 20,
-  height: 20,
-  boxSizing: "border-box",
-  border: "1px solid black",
-  marginRight: 10,
 });
 
 const content__button__toggle = css({
