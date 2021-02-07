@@ -1,10 +1,11 @@
 /** @jsx jsx */
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Todolist from "./Todolist";
 import TodoInsert from "./TodoInsert";
 import TodoHeader from "./TodoHeader";
 import { jsx, css, useTheme } from "@emotion/react";
 import { debounce } from "lodash";
+import { useWindowSize } from '../hooks/useWindowSize';
 
 interface Todo {
   id: number;
@@ -22,14 +23,18 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
     JSON.parse(localStorage.getItem("todo")!) || [] // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.
   );
   const [keyword, setKeyword] = useState<string>("");
+  const [footerHeight, setFooterHeight] = useState<number>(0);
 
-  let nextId = useRef(
-    (Math.max(
-      ...JSON.parse(localStorage.getItem("todo")!).map((todos: any) => todos.id)
-    ) +
-      1) |
-      1
-  );
+  let nextId = useRef(1);
+  // let nextId = useRef((Math.max(...JSON.parse(localStorage.getItem("todo")!).map((todos: any) => todos.id)) + 1) | 1 );
+
+  const theme = useTheme() as any;
+  const size = useWindowSize() as any;
+
+  useEffect(() => {
+    const containerDiv = document.getElementById("container")?.clientHeight;
+    setFooterHeight(containerDiv as any);
+  },[]);
 
   const onSubmitHandler = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -104,26 +109,29 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
   //   return todo.filter((todos) => todos.text.indexOf(keyword) > -1);
   // }, [todo, keyword]);
 
-  const theme = useTheme() as any;
+  const container = css({
+    height: "100%",
+    backgroundColor: `${theme.background}`,
+    color: `${theme.text}`,
+    textAlign: "center",
+    transitionDuration: "0.2s",
+    transitionProperty: "color, background-color",
+  });
 
   const wrapper = css({
     maxWidth: 540,
-    margin: "auto",
+    marginLeft: "auto",
+    marginRight: "auto",
+    "@media(min-width: 280px)": {
+      paddingLeft: 10,
+      paddingRight: 10,
+    }
   });
 
   const content = css({
     overflowY: "auto",
     height: 520,
     marginBottom: 40,
-  });
-
-  const container = css({
-    backgroundColor: `${theme.background}`,
-    color: `${theme.text}`,
-    textAlign: "center",
-    height: "100vh",
-    transitionDuration: "0.2s",
-    transitionProperty: "color, background-color",
   });
 
   const footer = css({
@@ -140,10 +148,17 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
       backgroundColor: `${theme.buttonBgHover}`,
       color: `${theme.buttonTextHover}`,
     },
+    "@media(min-width: 280px)": {
+      marginBottom: 40,
+    },
+    "@media(min-width: 768px)": {
+      marginBottom: size.height- footerHeight,
+    },
   })
 
   return (
     <div
+      id="container"
       css={container}
       // css={css`
       //   background-color: ${theme.background};

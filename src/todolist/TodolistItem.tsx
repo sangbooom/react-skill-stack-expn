@@ -57,7 +57,7 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
       display: "flex",
       flexDirection: "row",
     },
-    "&:nth-child(2n)": {
+    "&:nth-of-type(2n)": {
       backgroundColor: `${theme.nthBg}`
     }
   });

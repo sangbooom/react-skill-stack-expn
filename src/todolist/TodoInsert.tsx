@@ -39,7 +39,7 @@ const TodoInsert: React.FC<TodoInsertProps> = ({
     color: `${theme.inputText}`,
     border: `1px solid ${theme.inputBorder}`,
     backgroundColor: `${theme.inputBackgroundColor}`,
-    width: 500,
+    width: '100%',
     height: 40,
     paddingLeft: 10,
     fontSize: 20,

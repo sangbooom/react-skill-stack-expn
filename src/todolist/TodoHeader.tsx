@@ -29,12 +29,30 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ todo, onSearchHandler }) => {
     color: `${theme.headerMainTitleText}`,
     fontSize: 50,
     textAlign: "center",
+    "@media(min-width: 280px)": {
+      fontSize: 30,
+    },
+    "@media(min-width: 480px)": {
+      fontSize: 40,
+    },
+    "@media(min-width: 768px)": {
+      fontSize: 50,
+    },
   });
 
   const header__sub_title = css({
     color: `${theme.headerSubTitleText}`,
     transitionDuration: "0.2s",
     transitionProperty: "color",
+    "@media(min-width: 280px)": {
+      fontSize: 18,
+    },
+    "@media(min-width: 480px)": {
+      fontSize: 24,
+    },
+    "@media(min-width: 768px)": {
+      fontSize: 28,
+    },
   });
 
   const header__content = css({
@@ -45,7 +63,7 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ todo, onSearchHandler }) => {
 
   const header__input = css({
     fontSize: 20,
-    width: 500,
+    width: '100%',
     height: 40,
     paddingLeft: 10,
     marginBottom: "0.5rem",
