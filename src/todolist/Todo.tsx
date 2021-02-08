@@ -59,7 +59,6 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTodoInput(e.target.value);
-    // console.log(e.target.value); //debounce
   };
 
   const onDeleteHandler = useCallback(
@@ -105,9 +104,7 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
     debounceHandler(e.target.value);
   };
 
-  // const todoFilter = useCallback((): Todo[] => {
-  //   return todo.filter((todos) => todos.text.indexOf(keyword) > -1);
-  // }, [todo, keyword]);
+  ////////////////////////////////////////////////////////
 
   const container = css({
     height: "100%",
