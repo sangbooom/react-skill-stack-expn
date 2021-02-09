@@ -1,40 +1,44 @@
 /** @jsx jsx */
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Todolist from "./Todolist";
 import TodoInsert from "./TodoInsert";
 import TodoHeader from "./TodoHeader";
 import { jsx, css, useTheme } from "@emotion/react";
 import { debounce } from "lodash";
-import { useWindowSize } from '../hooks/useWindowSize';
+import { useWindowSize } from "../hooks/useWindowSize";
+import { useSelector, useDispatch } from "react-redux";
+import { selectTodoList, actions, RootState, Todos } from "../features";
 
-interface Todo {
-  id: number;
-  text: string;
-  checked: Boolean;
-}
 interface TodoProps {
   isDark: boolean;
   setDark: (value: boolean) => void; // setDark: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
-  const [todoInput, setTodoInput] = useState<string>("");
-  const [todo, setTodo] = useState<Todo[]>(
-    JSON.parse(localStorage.getItem("todo")!) || [] // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.
+  const dispatch = useDispatch();
+  const todoList = useSelector<RootState, Todos[]>((state) =>
+    selectTodoList(state.todos)
   );
+  const [todoInput, setTodoInput] = useState<string>("");
+  const [todo, setTodo] = useState<Todos[]>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [footerHeight, setFooterHeight] = useState<number>(0);
-
-  let nextId = useRef(1);
-  // let nextId = useRef((Math.max(...JSON.parse(localStorage.getItem("todo")!).map((todos: any) => todos.id)) + 1) | 1 );
 
   const theme = useTheme() as any;
   const size = useWindowSize() as any;
 
   useEffect(() => {
+    setTodo(todoList);
+  }, [todoList]);
+
+  useEffect(() => {
     const containerDiv = document.getElementById("container")?.clientHeight;
     setFooterHeight(containerDiv as any);
-  },[]);
+  }, []);
+
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setTodoInput(e.target.value);
+  };
 
   const onSubmitHandler = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,57 +47,32 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
         alert("할 일을 입력해주세요");
         return;
       }
-      const todos: Todo = {
-        id: nextId.current++,
-        text: todoInput,
-        checked: false,
-      };
-
-      setTodo(todo.concat(todos));
-
-      localStorage.setItem("todo", JSON.stringify(todo.concat(todos)));
+      dispatch(actions.addTodos({ text: todoInput, checked: false }));
       setTodoInput("");
     },
-    [todo, todoInput]
+    [dispatch, todoInput]
   );
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setTodoInput(e.target.value);
-  };
-
   const onDeleteHandler = useCallback(
-    (todoId: number): void => {
-      setTodo(todo.filter((todos) => todos.id !== todoId));
-      localStorage.setItem(
-        "todo",
-        JSON.stringify(todo.filter((todos) => todos.id !== todoId))
-      );
+    (todoId: string): void => {
+      dispatch(actions.removeTodos({ id: todoId }));
     },
-    [todo]
+    [dispatch]
   );
 
   const onCheckToggleHandler = useCallback(
-    (todoId: number): void => {
-      setTodo(
-        todo.map((todos) =>
-          todos.id === todoId ? { ...todos, checked: !todos.checked } : todos
-        )
-      );
-      console.log(todo);
+    (todoId: string): void => {
+      dispatch(actions.toggleTodos({ id: todoId }));
     },
-    [todo]
+    [dispatch]
   );
 
   const onEditHandler = useCallback(
-    (todoId: number, editedText: string): void => {
-      setTodo(
-        todo.map((todos) =>
-          todos.id === todoId ? { ...todos, text: editedText } : todos
-        )
-      );
+    (todoId: string, editedText: string): void => {
+      dispatch(actions.editTodos({ id: todoId, text: editedText }));
       setTodoInput("");
     },
-    [todo]
+    [dispatch]
   );
 
   const debounceHandler = debounce((evt) => {
@@ -122,7 +101,7 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
     "@media(min-width: 280px)": {
       paddingLeft: 10,
       paddingRight: 10,
-    }
+    },
   });
 
   const content = css({
@@ -149,23 +128,12 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
       marginBottom: 40,
     },
     "@media(min-width: 768px)": {
-      marginBottom: size.height- footerHeight,
+      marginBottom: size.height - footerHeight,
     },
-  })
+  });
 
   return (
-    <div
-      id="container"
-      css={container}
-      // css={css`
-      //   background-color: ${theme.background};
-      //   color: ${theme.text};
-      //   text-align: center;
-      //   height: 100vh;
-      //   transition-duration: 0.2s;
-      //   transition-property: background-color, color;
-      // `}
-    >
+    <div id="container" css={container}>
       <div css={wrapper}>
         <TodoHeader todo={todo} onSearchHandler={onSearchHandler} />
         <TodoInsert

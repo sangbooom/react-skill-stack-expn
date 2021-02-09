@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import React from "react";
 import { jsx, css, useTheme } from "@emotion/react";
-
-interface Todo {
-  id: Number;
-  text: String;
-  checked: Boolean;
-}
+import { Todos } from "../features";
+// interface Todo {
+//   id: string;
+//   text: String;
+//   checked: Boolean;
+// }
 interface TodoHeaderProps {
-  todo: Todo[];
+  todo: Todos[];
   onSearchHandler(e: any): void;
 }
 

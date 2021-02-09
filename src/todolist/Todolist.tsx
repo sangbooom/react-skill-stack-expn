@@ -2,17 +2,18 @@
 import React from "react";
 import TodolistItem from "./TodolistItem";
 import { jsx } from "@emotion/react";
+import { Todos } from "../features";
 
-interface Todo {
-  id: number;
-  text: string;
-  checked: Boolean;
-}
+// interface Todo {
+//   id: string;
+//   text: string;
+//   checked: Boolean;
+// }
 interface TodolistProps {
-  todo: Todo[];
-  onDeleteHandler(todoId: number): void;
-  onCheckToggleHandler(todoId: number): void;
-  onEditHandler(todoId: number, editedText: string): void;
+  todo: Todos[];
+  onDeleteHandler(todoId: string): void;
+  onCheckToggleHandler(todoId: string): void;
+  onEditHandler(todoId: string, editedText: string): void;
 }
 
 const Todolist: React.FC<TodolistProps> = ({
@@ -23,7 +24,7 @@ const Todolist: React.FC<TodolistProps> = ({
 }) => {
   return (
     <React.Fragment>
-      {todo.map((todos: Todo) => (
+      {todo.map((todos: Todos) => (
         <TodolistItem
           key={todos.id}
           todos={todos}

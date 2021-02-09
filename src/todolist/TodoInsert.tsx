@@ -14,7 +14,7 @@ const TodoInsert: React.FC<TodoInsertProps> = ({
   onChangeInput,
 }) => {
   const theme = useTheme() as any;
-
+  
   const content__button_confirm = css({
     width: 70,
     backgroundColor: `${theme.buttonBg}`,

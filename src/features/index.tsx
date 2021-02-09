@@ -6,64 +6,78 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { generate as generateRandomStr } from "randomstring";
 
 export default combineReducers({
   todos: todosReducer,
 });
 
-export interface Todo {
+export interface Todos {
   id: string;
   text: string;
   checked: boolean;
 }
 
-export interface TodoList {
-  list: Todo[];
+interface TodoList {
+  list: Todos[];
 }
 
 const initialState: TodoList = {
-  list: [],
+  list: JSON.parse(localStorage.getItem("todo")!) || [], // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.,
 };
 const actionPrefix = "TODOS";
-const addTodos = createAction<object>(`${actionPrefix}/add`); //?? 왜쓰지 createSlice면 한방 아니였나? reducer 쓰려고
+
+const addTodos = createAction<object>(`${actionPrefix}/add`);
 const toggleTodos = createAction<object>(`${actionPrefix}/toggle`);
+const removeTodos = createAction<object>(`${actionPrefix}/remove`);
+const editTodos = createAction<object>(`${actionPrefix}/edit`);
 
 const todoSlice = createSlice({
   name: actionPrefix,
   initialState,
   reducers: {
-    add: (
-      { list }: TodoList,
-      { payload: { text, checked } }: PayloadAction<Todo>
-    ) => {
-      const newTodo: Todo = {
-        id: generateRandomStr(5),
-        text: text.toString(),
-        checked,
+    add: ({ list }: TodoList, { payload: { text } }: PayloadAction<Todos>) => {
+      const newTodo: Todos = {
+        id: Math.random().toString(36).substring(2, 13),
+        text: text.toString().trim(),
+        checked: false,
       };
       list.push(newTodo);
+      localStorage.setItem("todo", JSON.stringify(list));
     },
-    // toggle: () => {
-
-    // },
-    // remove: () => {
-
-    // },
-    // edit: () => {
-
-    // },
+    toggle: ({ list }: TodoList, { payload: { id } }: PayloadAction<Todos>) => {
+      const targetIndex = list.findIndex((item: Todos) => item.id === id);
+      list[targetIndex].checked = !list[targetIndex].checked;
+    },
+    remove: ({ list }: TodoList, { payload: { id } }: PayloadAction<Todos>) => {
+      list.splice(
+        list.findIndex((todo) => todo.id === id),
+        1
+      );
+      localStorage.setItem(
+        "todo",
+        JSON.stringify(list.filter((item: Todos) => item.id !== id))
+      );
+    },
+    edit: (
+      { list }: TodoList,
+      { payload: { id, text } }: PayloadAction<Todos>
+    ) => {
+      const targetIndex = list.findIndex((item: Todos) => item.id === id);
+      list[targetIndex].text = text;
+    },
   },
 });
 
 export const selectTodoList = createSelector(
   (state: TodoList) => state.list,
-  (list: Todo[]) => list
+  (list: Todos[]) => list
 );
 
 export const actions = {
   addTodos,
-  toggleTodos
+  toggleTodos,
+  removeTodos,
+  editTodos,
 };
 
 export const rootReducer = combineReducers({

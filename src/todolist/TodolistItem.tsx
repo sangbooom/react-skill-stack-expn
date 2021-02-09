@@ -1,17 +1,18 @@
 /** @jsx jsx */
 import React, { ChangeEvent, useState } from "react";
 import { jsx, css, useTheme } from "@emotion/react";
+import { Todos } from "../features";
 
-interface Todo {
-  id: number;
-  text: string;
-  checked: Boolean;
-}
+// interface Todo {
+//   id: string;
+//   text: string;
+//   checked: Boolean;
+// }
 interface TodolistItemProps {
-  todos: Todo;
-  onDeleteHandler(todoId: number): void;
-  onCheckToggleHandler(todoId: number): void;
-  onEditHandler(todoId: number, editedText: string): void;
+  todos: Todos;
+  onDeleteHandler(todoId: string): void;
+  onCheckToggleHandler(todoId: string): void;
+  onEditHandler(todoId: string, editedText: string): void;
 }
 
 const TodolistItem: React.FC<TodolistItemProps> = ({
@@ -23,7 +24,7 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
   const [toggle, setToggle] = useState<boolean>(true);
   const [edit, setEdit] = useState<string>(todos.text);
 
-  const onToggleHandler = (todoId: number) => {
+  const onToggleHandler = (todoId: string) => {
     if (!toggle && todos.text !== edit) {
       onEditHandler(todoId, edit);
     }
