@@ -21,8 +21,17 @@ interface TodoList {
   list: Todos[];
 }
 
+function dummyData() {
+  const data = [];
+  for(let i=0; i<1000; i++){
+    data.push({id: `${i}`, text: `${i}`, checked: false});
+  }
+  return data;
+}
+
 const initialState: TodoList = {
-  list: JSON.parse(localStorage.getItem("todo")!) || [], // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.,
+  // list: JSON.parse(localStorage.getItem("todo")!) || [], // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.,
+  list: dummyData(),
 };
 const actionPrefix = "TODOS";
 
