@@ -13,6 +13,7 @@ interface TodolistItemProps {
   onDeleteHandler(todoId: string): void;
   onCheckToggleHandler(todoId: string): void;
   onEditHandler(todoId: string, editedText: string): void;
+  style: any;
 }
 
 const TodolistItem: React.FC<TodolistItemProps> = ({
@@ -20,6 +21,7 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
   onDeleteHandler,
   onCheckToggleHandler,
   onEditHandler,
+  style,
 }) => {
   const [toggle, setToggle] = useState<boolean>(true);
   const [edit, setEdit] = useState<string>(todos.text);
@@ -59,15 +61,15 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
       flexDirection: "row",
     },
     "&:nth-of-type(2n)": {
-      backgroundColor: `${theme.nthBg}`
-    }
+      backgroundColor: `${theme.nthBg}`,
+    },
   });
 
   const content__input__change_false = css({
     color: `${theme.inputText}`,
     border: `1px solid ${theme.inputBorder}`,
     backgroundColor: `${theme.inputBackgroundColor}`,
-  })
+  });
 
   const content__button__change_false = css({
     width: 20,
@@ -79,7 +81,7 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
   });
 
   return (
-    <div css={content_wrapper}>
+    <div css={content_wrapper} style={style}>
       <div onClick={onChangeHandler}>
         {todos.checked && toggle ? (
           <React.Fragment>
@@ -92,7 +94,11 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
             {todos.text}
           </React.Fragment>
         ) : (
-          <input css={content__input__change_false} onChange={onChangeText} value={edit} />
+          <input
+            css={content__input__change_false}
+            onChange={onChangeText}
+            value={edit}
+          />
         )}
       </div>
       <div css={content__button__toggle}>

@@ -1,14 +1,10 @@
 /** @jsx jsx */
-import React from "react";
+import React, { useCallback } from "react";
 import TodolistItem from "./TodolistItem";
 import { jsx } from "@emotion/react";
 import { Todos } from "../features";
+import { List } from "react-virtualized";
 
-// interface Todo {
-//   id: string;
-//   text: string;
-//   checked: Boolean;
-// }
 interface TodolistProps {
   todo: Todos[];
   onDeleteHandler(todoId: string): void;
@@ -22,18 +18,33 @@ const Todolist: React.FC<TodolistProps> = ({
   onCheckToggleHandler,
   onEditHandler,
 }) => {
-  return (
-    <React.Fragment>
-      {todo.map((todos: Todos) => (
+  const rowRenderer = useCallback(
+    ({ index, key, style }) => {
+      const todos = todo[index];
+      return (
         <TodolistItem
-          key={todos.id}
+          key={key}
           todos={todos}
           onDeleteHandler={onDeleteHandler}
           onCheckToggleHandler={onCheckToggleHandler}
           onEditHandler={onEditHandler}
+          style={style}
         />
-      ))}
-    </React.Fragment>
+      );
+    },
+    [todo, onDeleteHandler, onCheckToggleHandler, onEditHandler]
+  );
+
+  return (
+    <List
+      width={520}
+      height={520}
+      rowCount={todo.length}
+      rowHeight={64}
+      rowRenderer={rowRenderer}
+      list={todo}
+      style={{ outline: "none" }}
+    />
   );
 };
 
