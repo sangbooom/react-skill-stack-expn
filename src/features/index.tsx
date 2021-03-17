@@ -47,6 +47,7 @@ const todoSlice = createSlice({
     toggle: ({ list }: TodoList, { payload: { id } }: PayloadAction<Todos>) => {
       const targetIndex = list.findIndex((item: Todos) => item.id === id);
       list[targetIndex].checked = !list[targetIndex].checked;
+      localStorage.setItem("todo", JSON.stringify(list));
     },
     remove: ({ list }: TodoList, { payload: { id } }: PayloadAction<Todos>) => {
       list.splice(
@@ -64,6 +65,7 @@ const todoSlice = createSlice({
     ) => {
       const targetIndex = list.findIndex((item: Todos) => item.id === id);
       list[targetIndex].text = text;
+      localStorage.setItem("todo", JSON.stringify(list));
     },
   },
 });
