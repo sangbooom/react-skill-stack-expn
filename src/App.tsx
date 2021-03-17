@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Todo from "./todolist/Todo";
 import "./App.css";
 import { jsx, ThemeProvider } from "@emotion/react";
+import BullsAndCows from "./bullsAndCows/BullsAndCows";
 
 const themeLight = {
   text: "#000",
@@ -45,6 +46,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={isDark ? themeDark : themeLight}>
       <Todo isDark={isDark} setDark={setDark} />
     </ThemeProvider>
+    // <BullsAndCows />
   );
 };
 
