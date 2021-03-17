@@ -13,17 +13,23 @@
 
 > 2021-02-09 redux-toolkit 적용 
 
+> 2021-03-17 숫자야구에 typescript 적용
+
+> 2021-03-18 todolist에 더미데이터 추가 후 react-virtualized로 최적화 
+
 ## 👨🏻‍💻 적용하기
 
-| 기술 및 라이브러리 | 용도 | 진행 |
+| 기술 및 라이브러리 | 용도 | 진행 여부 |
 |:---|:---|:---:|
 | `emotion` | CSS-in-JS | ✅ |
 | `storybook` | UI컴포넌트의 독립적인 개발환경 구축 |  |
 | `lodash (throttle, debounce)` | 유틸리티 기능제공 | ✅ |
 | `redux-toolkit` | 상태 관리 | ✅ |
 | `jest` | 단위 테스트 | ✅ |
+| `react-virtualized` | 웹 성능 최적화 | ✅ |
 | `Lazy Loading` | 웹 성능 최적화 | |
-| `code spliting` | 코드 스플리팅 | |
+| `code spliting` | 웹 성능 최적화 | |
+
 
 
 
