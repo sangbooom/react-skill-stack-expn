@@ -36,6 +36,10 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
     setFooterHeight(containerDiv as any);
   }, []);
 
+  const darkModeHandler = () => {
+    setDark(!isDark);
+  };
+
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTodoInput(e.target.value);
   };
@@ -149,12 +153,7 @@ const Todo: React.FC<TodoProps> = ({ isDark, setDark }) => {
             onEditHandler={onEditHandler}
           />
         </div>
-        <button
-          css={footer}
-          onClick={() => {
-            setDark(!isDark);
-          }}
-        >
+        <button css={footer} onClick={darkModeHandler}>
           {isDark ? "light mode" : "dark mode"}
         </button>
       </div>

@@ -37,4 +37,4 @@ const Todolist: React.FC<TodolistProps> = ({
   );
 };
 
-export default Todolist;
+export default React.memo(Todolist);

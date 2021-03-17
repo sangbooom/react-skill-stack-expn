@@ -63,7 +63,7 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ todo, onSearchHandler }) => {
 
   const header__input = css({
     fontSize: 20,
-    width: '100%',
+    width: "100%",
     height: 40,
     paddingLeft: 10,
     marginBottom: "0.5rem",
@@ -71,7 +71,6 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ todo, onSearchHandler }) => {
     border: `1px solid ${theme.inputBorder}`,
     backgroundColor: `${theme.inputBackgroundColor}`,
   });
-
 
   return (
     <div>
@@ -89,4 +88,4 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ todo, onSearchHandler }) => {
   );
 };
 
-export default TodoHeader;
+export default React.memo(TodoHeader);

@@ -57,4 +57,4 @@ const TodoInsert: React.FC<TodoInsertProps> = ({
   );
 };
 
-export default TodoInsert;
+export default React.memo(TodoInsert);
