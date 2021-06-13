@@ -50,7 +50,7 @@ const todoSlice = createSlice({
         text: text.toString().trim(),
         checked: false,
       };
-      list.push(newTodo);
+      list.unshift(newTodo);
       localStorage.setItem("todo", JSON.stringify(list));
     },
     toggle: ({ list }: TodoList, { payload: { id } }: PayloadAction<Todos>) => {
