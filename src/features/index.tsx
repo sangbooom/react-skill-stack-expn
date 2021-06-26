@@ -15,6 +15,7 @@ export interface Todos {
   id: string;
   text: string;
   checked: boolean;
+  updatedAt: any;
 }
 
 interface TodoList {
@@ -30,8 +31,9 @@ function dummyData() {
 }
 
 const initialState: TodoList = {
-  // list: JSON.parse(localStorage.getItem("todo")!) || [], // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.,
-  list: dummyData(),
+  list: JSON.parse(localStorage.getItem("todo")!) || [], // Non-null assertion operator, ! 는 앞의 값이 확실히 null이나 undefined가 아니라는 걸 알리려고 할 때 쓴다.,
+  // list: dummyData(),
+  // list: [],
 };
 const actionPrefix = "TODOS";
 
@@ -49,6 +51,7 @@ const todoSlice = createSlice({
         id: Math.random().toString(36).substring(2, 13),
         text: text.toString().trim(),
         checked: false,
+        updatedAt: new Date().getTime(),
       };
       list.unshift(newTodo);
       localStorage.setItem("todo", JSON.stringify(list));

@@ -2,6 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { jsx, css, useTheme } from "@emotion/react";
 import { Todos } from "../features";
+import GetTimeFromNow from "../util/GetTimeFromNow";
 
 // interface Todo {
 //   id: string;
@@ -52,8 +53,6 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 20,
-    marginTop: 10,
-    marginBottom: 10,
     border: "0.3px solid #e6e6e6",
     borderRadius: 10,
     "& div": {
@@ -102,6 +101,7 @@ const TodolistItem: React.FC<TodolistItemProps> = ({
         )}
       </div>
       <div css={content__button__toggle}>
+        <div style={{color: 'gray'}}>{GetTimeFromNow(todos.updatedAt)}</div>
         <div onClick={() => onToggleHandler(todos.id)}>
           {toggle ? "수정" : "적용"}
         </div>
